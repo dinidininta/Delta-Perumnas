@@ -18,28 +18,61 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+        <ImageButton
+            android:id="@+id/back_caption_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/exit_button_width"
+            android:layout_height="@dimen/exit_button_height"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:tint="@color/white" />
+
+        <Button
+            android:id="@+id/lanjutkan_caption__button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:text="@string/lanjut"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/caption_toolbar_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_caption"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+
     </android.support.v7.widget.Toolbar>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+        android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding" >
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/perusahaan_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/margin_top">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etPerusahaan"
             android:ems="10"
+            android:inputType="text"
             android:textSize="@dimen/text_size"
             android:hint="@string/perusahaan"/>
 
@@ -49,12 +82,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/proyek_layout"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/margin_top">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="text"
             android:textSize="@dimen/text_size"
             android:id="@+id/etProyek"
             android:hint="@string/proyek"/>
@@ -65,13 +99,14 @@
         android:id="@+id/pekerjaan_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/margin_top">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etPekerjaan"
             android:ems="10"
+            android:inputType="text"
             android:textSize="@dimen/text_size"
             android:hint="@string/pekerjaan"/>
 
@@ -81,13 +116,14 @@
         android:id="@+id/lokasi_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/margin_top">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etLokasi"
             android:ems="10"
+            android:inputType="text"
             android:textSize="@dimen/text_size"
             android:hint="@string/lokasi"/>
 
@@ -97,13 +133,14 @@
         android:id="@+id/keterangan_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/margin_top">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etKeterangan"
             android:ems="10"
+            android:inputType="text"
             android:textSize="@dimen/text_size"
             android:hint="@string/keterangan"/>
 
@@ -113,9 +150,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/teksOpacity"
-        android:text="Opacity: 0%"
+        android:text="@string/opacity"
         android:textSize="@dimen/text_size"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="@dimen/margin_top"/>
 
     <SeekBar
         android:layout_width="match_parent"
@@ -130,7 +167,7 @@
         android:text="@string/simpan"
         android:textSize="@dimen/text_size"
         android:textColor="@color/white"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/margin_top"
         android:background="@color/colorAccent"/>
 
 

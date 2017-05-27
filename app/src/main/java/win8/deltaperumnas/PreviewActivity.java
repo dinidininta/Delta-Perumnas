@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import java.util.Date;
 
 public class PreviewActivity extends AppCompatActivity {
 
+    ImageButton closeButton;
     ImageView mImageView;
     Bitmap bm, newImage, logo;
     String date, time;
@@ -48,12 +50,12 @@ public class PreviewActivity extends AppCompatActivity {
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar_preview);
 
         mImageView = (ImageView) findViewById(R.id.gambarPreview);
+        closeButton = (ImageButton) findViewById(R.id.close_preview_button);
         savePhoto = (Button) findViewById(R.id.saveButton);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
-        toolbar.setTitle("Preview");
-        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("");
         toolbar.setSubtitle("");
 
         date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -115,6 +117,14 @@ public class PreviewActivity extends AppCompatActivity {
             }
         });
 
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public boolean saveImageToExternalStorage(Bitmap image) {

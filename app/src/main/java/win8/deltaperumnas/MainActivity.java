@@ -27,21 +27,15 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton buttonCapture;
+    Button buttonCapture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar_main);
-        buttonCapture = (ImageButton) findViewById(R.id.button_capture);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
-        toolbar.setTitle("Delta Perumnas");
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setSubtitle("");
+        buttonCapture = (Button) findViewById(R.id.button_capture);
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             buttonCapture.setEnabled(false);

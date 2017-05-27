@@ -5,34 +5,21 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mainactivity_deltaperumnas"
     tools:context="win8.deltaperumnas.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_main"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    </android.support.v7.widget.Toolbar>
-
-    <ImageButton
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="265dp"
         android:layout_height="wrap_content"
-        style="?android:attr/borderlessButtonStyle"
-        android:src="@drawable/ic_camera"
         android:id="@+id/button_capture"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_bottom"
+        android:text="@string/capture"
+        android:textSize="@dimen/button_main"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:adjustViewBounds="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        android:background="@drawable/element_background"
-        android:layout_marginTop="96dp"
-        android:layout_below="@+id/toolbar_main"
-        android:layout_centerHorizontal="true" />
+        android:background="@drawable/button_bg_rounded_corners"/>
 
 
 </RelativeLayout>

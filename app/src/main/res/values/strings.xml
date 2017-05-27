@@ -13,4 +13,11 @@
     <string name="lokasi">Lokasi</string>
     <string name="keterangan">Keterangan</string>
     <string name="simpan">Simpan</string>
+    <string name="lanjut">Lanjutkan</string>
+    <string name="add_caption">Add Caption</string>
+    <string name="preview">Preview</string>
+    <string name="save">Save</string>
+    <string name="opacity">Opacity 0%</string>
+    <string name="capture">Capture From Camera</string>
+
 </resources>

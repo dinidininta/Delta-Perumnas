@@ -18,23 +18,48 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <Button
+        <ImageButton
+            android:id="@+id/close_preview_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/exit_button_width"
+            android:layout_height="@dimen/exit_button_height"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="start"
+            android:src="@drawable/ic_close_black_24dp"
+            android:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/preview_toolbar_tittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/preview"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+
+        <Button
             android:id="@+id/saveButton"
-            android:text="Save"
-            android:textColor="@color/white"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:layout_gravity="end"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small" />
 
     </android.support.v7.widget.Toolbar>
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/gambarPreview"
-        android:layout_centerInParent="true"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar_preview" />
 
     <!--<ProgressBar-->
         <!--style="?android:attr/progressBarStyleLarge"-->
@@ -46,13 +71,15 @@
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/avi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         style="@style/AVLoadingIndicatorView.Large"
         android:visibility="invisible"
         app:indicatorName="BallClipRotateMultipleIndicator"
         app:indicatorColor="@color/colorAccent"
-        android:layout_centerInParent="true"
-    />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/toolbar_preview"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
