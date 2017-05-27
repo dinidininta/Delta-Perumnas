@@ -1,5 +1,6 @@
 package win8.deltaperumnas;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,15 +11,21 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -30,10 +37,12 @@ public class CaptionActivity extends AppCompatActivity {
     public static Uri file;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
+    private Vibrator vib;
+    Animation animShake;
     Button saveCaption;
     TextView showOpacity;
     SeekBar opacity;
+    TextInputLayout perusahaanLayout, pekerjaanLayout, proyekLayout, lokasiLayout, keteranganlayout;
     EditText etperusahaan, etpekerjaan, etproyek, etlokasi, etketerangan;
     public static String perusahaan, pekerjaan, proyek, lokasi, keterangan;
     public static int opac=0;
@@ -46,6 +55,12 @@ public class CaptionActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_caption);
 
+        perusahaanLayout = (TextInputLayout) findViewById(R.id.perusahaan_layout);
+        pekerjaanLayout = (TextInputLayout) findViewById(R.id.pekerjaan_layout);
+        proyekLayout = (TextInputLayout) findViewById(R.id.proyek_layout);
+        lokasiLayout = (TextInputLayout) findViewById(R.id.lokasi_layout);
+        keteranganlayout = (TextInputLayout) findViewById(R.id.keterangan_layout);
+
         saveCaption = (Button) findViewById(R.id.button_simpancaption);
         etperusahaan = (EditText) findViewById(R.id.etPerusahaan);
         etpekerjaan = (EditText) findViewById(R.id.etPekerjaan);
@@ -54,6 +69,9 @@ public class CaptionActivity extends AppCompatActivity {
         etketerangan = (EditText) findViewById(R.id.etKeterangan);
         showOpacity = (TextView) findViewById(R.id.teksOpacity);
         opacity = (SeekBar) findViewById(R.id.seekOpacity);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
+        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -87,10 +105,115 @@ public class CaptionActivity extends AppCompatActivity {
                 proyek = etproyek.getText().toString();
                 lokasi = etlokasi.getText().toString();
                 keterangan = etlokasi.getText().toString();
+
+//                submitForm();
                 dispatchTakePictureIntent();
             }
         });
     }
+
+    private void submitForm() {
+
+        if (!checkPerusahaan()) {
+            etperusahaan.setAnimation(animShake);
+            etperusahaan.startAnimation(animShake);
+            vib.vibrate(120);
+            return;
+        }
+        if (!checkPekerjaan()) {
+            etpekerjaan.setAnimation(animShake);
+            etpekerjaan.startAnimation(animShake);
+            vib.vibrate(120);
+            return;
+        }
+        if (!checkProyek()) {
+            etproyek.setAnimation(animShake);
+            etproyek.startAnimation(animShake);
+            vib.vibrate(120);
+            return;
+        }
+        if (!checkLokasi()) {
+            etlokasi.setAnimation(animShake);
+            etlokasi.startAnimation(animShake);
+            vib.vibrate(120);
+            return;
+        }
+
+        if (!checkKeterangan()) {
+            etketerangan.setAnimation(animShake);
+            etketerangan.startAnimation(animShake);
+            vib.vibrate(120);
+            return;}
+
+        perusahaanLayout.setErrorEnabled(false);
+        pekerjaanLayout.setErrorEnabled(false);
+        proyekLayout.setErrorEnabled(false);
+        lokasiLayout.setErrorEnabled(false);
+        keteranganlayout.setErrorEnabled(false);
+
+        Toast.makeText(getApplicationContext(), "Berhasil disimpan", Toast.LENGTH_SHORT).show();
+    }
+    private boolean checkPerusahaan() {
+        if (etperusahaan.getText().toString().trim().isEmpty()) {
+
+            perusahaanLayout.setErrorEnabled(true);
+           perusahaanLayout.setError(getString(R.string.err_msg_perusahaan));
+            etperusahaan.setError(getString(R.string.err_msg_required));
+            return false;
+        }
+        perusahaanLayout.setErrorEnabled(false);
+        return true;
+    }
+
+    private boolean checkPekerjaan() {
+        if (etpekerjaan.getText().toString().trim().isEmpty()) {
+
+            pekerjaanLayout.setErrorEnabled(true);
+           pekerjaanLayout.setError(getString(R.string.err_msg_pekerjaan));
+            etpekerjaan.setError(getString(R.string.err_msg_required));
+            return false;
+        }
+        pekerjaanLayout.setErrorEnabled(false);
+        return true;
+    }
+
+    private boolean checkProyek() {
+        if (etproyek.getText().toString().trim().isEmpty()) {
+
+            proyekLayout.setErrorEnabled(true);
+           proyekLayout.setError(getString(R.string.err_msg_proyek));
+            etproyek.setError(getString(R.string.err_msg_required));
+            return false;
+        }
+        proyekLayout.setErrorEnabled(false);
+        return true;
+    }
+
+    private boolean checkLokasi() {
+        if (etlokasi.getText().toString().trim().isEmpty()) {
+
+            lokasiLayout.setErrorEnabled(true);
+            lokasiLayout.setError(getString(R.string.err_msg_lokasi));
+           etlokasi.setError(getString(R.string.err_msg_required));
+            return false;
+        }
+        lokasiLayout.setErrorEnabled(false);
+        return true;
+    }
+
+    private boolean checkKeterangan() {
+        if (etketerangan.getText().toString().trim().isEmpty()) {
+
+            keteranganlayout.setErrorEnabled(true);
+            keteranganlayout.setError(getString(R.string.err_msg_keterangan));
+            etketerangan.setError(getString(R.string.err_msg_required));
+            return false;
+        }
+        keteranganlayout.setErrorEnabled(false);
+        return true;
+    }
+
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -124,4 +247,6 @@ public class CaptionActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
+
+
 }

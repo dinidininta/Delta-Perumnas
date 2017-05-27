@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Delta Perumnas</string>
+    <string name="btn_sign_up">Selesai</string>
+    <string name="err_msg_perusahaan">Masukkan nama perusahaan</string>
+    <string name="err_msg_proyek">Masukkan nama proyek</string>
+    <string name="err_msg_pekerjaan">Masukkan nama pekerjaan</string>
+    <string name="err_msg_lokasi">Masukkan lokasi</string>
+    <string name="err_msg_keterangan">Masukkan keterangan</string>
+    <string name="err_msg_required">Masukkan yang valid diperlukan</string>
+    <string name="perusahaan">Perusahaan</string>
+    <string name="proyek">Proyek</string>
+    <string name="pekerjaan">Pekerjaan</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="simpan">Simpan</string>
 </resources>

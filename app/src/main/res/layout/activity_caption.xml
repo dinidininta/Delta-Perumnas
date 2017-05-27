@@ -20,64 +20,92 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.design.widget.TextInputLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/perusahaan_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etPerusahaan"
-            android:hint="Perusahaan"/>
+            android:ems="10"
+            android:textSize="@dimen/text_size"
+            android:hint="@string/perusahaan"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/proyek_layout"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="@dimen/text_size"
             android:id="@+id/etProyek"
-            android:hint="Proyek"/>
+            android:hint="@string/proyek"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/pekerjaan_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etPekerjaan"
-            android:hint="Pekerjaan"/>
+            android:ems="10"
+            android:textSize="@dimen/text_size"
+            android:hint="@string/pekerjaan"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/lokasi_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etLokasi"
-            android:hint="Lokasi"/>
+            android:ems="10"
+            android:textSize="@dimen/text_size"
+            android:hint="@string/lokasi"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/keterangan_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etKeterangan"
-            android:hint="Keterangan"/>
+            android:ems="10"
+            android:textSize="@dimen/text_size"
+            android:hint="@string/keterangan"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -86,22 +114,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/teksOpacity"
         android:text="Opacity: 0%"
+        android:textSize="@dimen/text_size"
         android:layout_marginTop="20dp"/>
 
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:id="@+id/seekOpacity"
-        />
+        android:id="@+id/seekOpacity"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button_simpancaption"
-        android:text="Simpan"
+        android:text="@string/simpan"
+        android:textSize="@dimen/text_size"
         android:textColor="@color/white"
         android:layout_marginTop="25dp"
         android:background="@color/colorAccent"/>
+
+
+
+    </LinearLayout>
 
 </LinearLayout>
