@@ -2,6 +2,7 @@ package win8.deltaperumnas;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,7 +53,6 @@ public class CaptionActivity extends AppCompatActivity {
     public static String perusahaan, pekerjaan, proyek, lokasi, keterangan;
     public static int opac=0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,11 +82,20 @@ public class CaptionActivity extends AppCompatActivity {
         animShake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
         vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        SharedPreferences sharedPreferences = this.getSharedPreferences("caption", 0);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
+
+        etperusahaan.setText(sharedPreferences.getString("perusahaan", null));
+        etpekerjaan.setText(sharedPreferences.getString("pekerjaan", null));
+        etproyek.setText(sharedPreferences.getString("proyek", null));
+        etlokasi.setText(sharedPreferences.getString("lokasi", null));
+        etketerangan.setText(sharedPreferences.getString("keterangan", null));
 
         opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -101,6 +110,7 @@ public class CaptionActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                editor.putString("opacity", String.valueOf(seekBar.getProgress()));
                 opac = seekBar.getProgress();
             }
         });
@@ -116,131 +126,131 @@ public class CaptionActivity extends AppCompatActivity {
 
         lanjutkanButton.setEnabled(false);
 
-        etperusahaan.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.toString().equals("")){
-                    lanjutkanButton.setEnabled(false);
-                }else {
-                    lanjutkanButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        etpekerjaan.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.toString().equals("")){
-                    lanjutkanButton.setEnabled(false);
-                }else {
-                    lanjutkanButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-        etproyek.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.toString().equals("")){
-                    lanjutkanButton.setEnabled(false);
-                }else {
-                    lanjutkanButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        etlokasi.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.toString().equals("")){
-                    lanjutkanButton.setEnabled(false);
-                }else {
-                    lanjutkanButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        etketerangan.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                if(charSequence.toString().equals("")){
-                    lanjutkanButton.setEnabled(false);
-                }else {
-                    lanjutkanButton.setEnabled(true);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+//        etperusahaan.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                if(charSequence.toString().equals("")){
+//                    lanjutkanButton.setEnabled(false);
+//                }else {
+//                    lanjutkanButton.setEnabled(true);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
+//        etpekerjaan.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                if(charSequence.toString().equals("")){
+//                    lanjutkanButton.setEnabled(false);
+//                }else {
+//                    lanjutkanButton.setEnabled(true);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
+//
+//        etproyek.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                if(charSequence.toString().equals("")){
+//                    lanjutkanButton.setEnabled(false);
+//                }else {
+//                    lanjutkanButton.setEnabled(true);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
+//        etlokasi.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                if(charSequence.toString().equals("")){
+//                    lanjutkanButton.setEnabled(false);
+//                }else {
+//                    lanjutkanButton.setEnabled(true);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+//
+//        etketerangan.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                if(charSequence.toString().equals("")){
+//                    lanjutkanButton.setEnabled(false);
+//                }else {
+//                    lanjutkanButton.setEnabled(true);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
 
         lanjutkanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perusahaan = etperusahaan.getText().toString();
-                pekerjaan = etpekerjaan.getText().toString();
-                proyek = etproyek.getText().toString();
-                lokasi = etlokasi.getText().toString();
-                keterangan = etlokasi.getText().toString();
-
+                editor.putString("perusahaan", etperusahaan.getText().toString());
+                editor.putString("pekerjaan", etpekerjaan.getText().toString());
+                editor.putString("proyek", etproyek.getText().toString());
+                editor.putString("lokasi", etlokasi.getText().toString());
+                editor.putString("keterangan", etlokasi.getText().toString());
+                editor.apply();
                 dispatchTakePictureIntent();
             }
         });
@@ -292,6 +302,8 @@ public class CaptionActivity extends AppCompatActivity {
         proyekLayout.setErrorEnabled(false);
         lokasiLayout.setErrorEnabled(false);
         keteranganlayout.setErrorEnabled(false);
+
+        lanjutkanButton.setEnabled(true);
 
         Toast.makeText(getApplicationContext(), "Berhasil disimpan", Toast.LENGTH_SHORT).show();
     }

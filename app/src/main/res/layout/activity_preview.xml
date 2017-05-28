@@ -69,17 +69,5 @@
         <!--android:progressDrawable="@drawable/circular_progress_bar"-->
         <!--android:layout_centerHorizontal="true" />-->
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/AVLoadingIndicatorView.Large"
-        android:visibility="invisible"
-        app:indicatorName="BallClipRotateMultipleIndicator"
-        app:indicatorColor="@color/colorAccent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/toolbar_preview"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

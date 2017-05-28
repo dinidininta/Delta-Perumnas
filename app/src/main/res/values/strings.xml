@@ -19,5 +19,5 @@
     <string name="save">Save</string>
     <string name="opacity">Opacity 0%</string>
     <string name="capture">Capture From Camera</string>
-
+    <string name="loading">Harap Tunggu...</string>
 </resources>
