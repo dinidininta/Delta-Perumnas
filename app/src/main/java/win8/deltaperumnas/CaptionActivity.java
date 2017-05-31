@@ -1,6 +1,7 @@
 package win8.deltaperumnas;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -249,7 +251,7 @@ public class CaptionActivity extends AppCompatActivity {
                 editor.putString("pekerjaan", etpekerjaan.getText().toString());
                 editor.putString("proyek", etproyek.getText().toString());
                 editor.putString("lokasi", etlokasi.getText().toString());
-                editor.putString("keterangan", etlokasi.getText().toString());
+                editor.putString("keterangan", etketerangan.getText().toString());
                 editor.apply();
                 dispatchTakePictureIntent();
             }
@@ -399,6 +401,4 @@ public class CaptionActivity extends AppCompatActivity {
         return new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
     }
-
-
 }
