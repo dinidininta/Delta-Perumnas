@@ -96,7 +96,7 @@ public class PreviewActivity extends AppCompatActivity {
         textPaint.setColor(Color.BLACK);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        textPaint.setTextSize(36);
+        textPaint.setTextSize(29);
         textPaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL));
 
         Paint logoPaint = new Paint();
@@ -116,7 +116,7 @@ public class PreviewActivity extends AppCompatActivity {
             capY += textPaint.descent() - textPaint.ascent();
         }
         for(String t : timestamp.split("\n")){
-            c.drawText(t, newImage.getWidth()/10+newImage.getWidth()/2, timeY, textPaint);
+            c.drawText(t, newImage.getWidth()/9+newImage.getWidth()/2, timeY, textPaint);
             timeY += textPaint.descent() - textPaint.ascent();
         }
 
