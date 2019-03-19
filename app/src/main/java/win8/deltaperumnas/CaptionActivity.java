@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import android.text.TextWatcher;
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -54,6 +56,7 @@ public class CaptionActivity extends AppCompatActivity {
     private EditText etperusahaan, etpekerjaan, etproyek, etlokasi, etketerangan;
     public static String perusahaan, pekerjaan, proyek, lokasi, keterangan;
     public static int opac=0;
+    private String currentPhotopath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -313,7 +316,7 @@ public class CaptionActivity extends AppCompatActivity {
     private boolean checkPerusahaan() {
         if (etperusahaan.getText().toString().trim().isEmpty()) {
             perusahaanLayout.setErrorEnabled(true);
-           perusahaanLayout.setError(getString(R.string.err_msg_perusahaan));
+            perusahaanLayout.setError(getString(R.string.err_msg_perusahaan));
             etperusahaan.setError(getString(R.string.err_msg_required));
             return false;
         }
@@ -335,7 +338,7 @@ public class CaptionActivity extends AppCompatActivity {
     private boolean checkProyek() {
         if (etproyek.getText().toString().trim().isEmpty()) {
             proyekLayout.setErrorEnabled(true);
-           proyekLayout.setError(getString(R.string.err_msg_proyek));
+            proyekLayout.setError(getString(R.string.err_msg_proyek));
             etproyek.setError(getString(R.string.err_msg_required));
             return false;
         }
@@ -372,9 +375,26 @@ public class CaptionActivity extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            file = Uri.fromFile(getOutputMediaFile());
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e){
+                Toast.makeText(this, "Error saat menyimpan foto", Toast.LENGTH_LONG).show();
+            }
+
+            if(photoFile != null){
+                Uri photoUri = FileProvider.getUriForFile(this,
+                        "win8.deltaperumnas.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+//            file = Uri.fromFile(getOutputMediaFile());
+//            file = FileProvider.getUriForFile(CaptionActivity.this,
+//                    "win8.deltaperumnas.provider",
+//                    getOutputMediaFile());
+//            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
@@ -383,22 +403,22 @@ public class CaptionActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Intent intent = new Intent(this, PreviewActivity.class);
+            intent.putExtra(PreviewActivity.EXTRA_FILE_PATH, currentPhotopath);
             startActivity(intent);
         }
     }
 
-    private static File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "Delta Perumnas");
-
-        if (!mediaStorageDir.exists()){
-            if (!mediaStorageDir.mkdirs()){
-                return null;
-            }
-        }
-
+    private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
+        String imageFileName = "IMG_DeltaPerumnas_" + timeStamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        currentPhotopath = image.getAbsolutePath();
+        return image;
     }
 }

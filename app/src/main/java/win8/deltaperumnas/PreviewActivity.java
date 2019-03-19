@@ -1,20 +1,28 @@
 package win8.deltaperumnas;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,20 +38,21 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class PreviewActivity extends AppCompatActivity {
 
-    ImageButton closeButton;
-    ImageView mImageView;
-    Bitmap bm, newImage, logo, resizedBm;
-    String date, time;
-    Button savePhoto;
-    ProgressBar spinner;
-    AVLoadingIndicatorView avi;
-    String path="";
+    private Bitmap newImage;
+    private String date, time, path;
+    private AVLoadingIndicatorView avi;
+    public static String EXTRA_FILE_PATH = "extra_file_path";
+    private static final int PERMISSION_REQUEST_CODE = 200;
     //AlertDialog loading;
 
     @Override
@@ -53,9 +62,9 @@ public class PreviewActivity extends AppCompatActivity {
 
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar_preview);
 
-        mImageView = (ImageView) findViewById(R.id.gambarPreview);
-        closeButton = (ImageButton) findViewById(R.id.close_preview_button);
-        savePhoto = (Button) findViewById(R.id.saveButton);
+        ImageView mImageView = (ImageView) findViewById(R.id.gambarPreview);
+        ImageButton closeButton = (ImageButton) findViewById(R.id.close_preview_button);
+        Button buttonSavePhoto = (Button) findViewById(R.id.saveButton);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         //toolbar.setNavigationIcon(R.drawable.ic_toolbar);
@@ -68,16 +77,18 @@ public class PreviewActivity extends AppCompatActivity {
         time = new SimpleDateFormat("HH:mm:ss").format(new Date());
         avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
 
-        path = CaptionActivity.file.getPath();
+//        path = CaptionActivity.file.getPath();
+        path = getIntent().getStringExtra(EXTRA_FILE_PATH);
+        Log.i("cache path", path);
 
-        bm = BitmapFactory.decodeFile(path);
-        logo = BitmapFactory.decodeResource(getResources(), R.drawable.perumnas_baru);
+        Bitmap bm = BitmapFactory.decodeFile(path);
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.perumnas_baru);
 
 //        Bitmap.Config config = bm.getConfig();
         int width = bm.getWidth();
         int height = bm.getHeight();
 
-        resizedBm = decodeSampledBitmapFromResource(path, width/2, height/2);
+        Bitmap resizedBm = decodeSampledBitmapFromResource(path, width / 2, height / 2);
         Bitmap.Config config = resizedBm.getConfig();
         int resizedWidth = resizedBm.getWidth();
         int resizedHeight = resizedBm.getHeight();
@@ -86,6 +97,9 @@ public class PreviewActivity extends AppCompatActivity {
 
         Canvas c = new Canvas(newImage);
         c.drawBitmap(resizedBm, 0, 0, null);
+
+        Log.i("newImageWidth", String.valueOf(newImage.getWidth()));
+        Log.i("canvasWidth", String.valueOf(c.getWidth()));
 
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
@@ -106,26 +120,41 @@ public class PreviewActivity extends AppCompatActivity {
                 "Lokasi: "+sharedPreferences.getString("lokasi", null) + "\n" +
                 "Keterangan: "+sharedPreferences.getString("keterangan", null);
         String timestamp = "" + "\n" + date + "\n" + time;
+
+        Log.i("keteranganLength",String.valueOf(textPaint.measureText("Keterangan: "
+                +sharedPreferences.getString("keterangan", null))));
+
         int capY = newImage.getHeight()-newImage.getHeight()/7;
         int timeY = newImage.getHeight()-newImage.getHeight()/3;
-        c.drawRect(0, newImage.getHeight()-newImage.getHeight()/3, newImage.getWidth()-newImage.getWidth()/4, newImage.getHeight(), paint);
+//        float rectRight = getLongestSubstringLength(allCap.split("\n"), textPaint);
+        float dtLength = getLongestSubstringLength(timestamp.split("\n"), textPaint);
+//        float x = ((float) newImage.getWidth()) - rectRight;
+//        float x = newImage.getWidth()-newImage.getWidth()/4;
+
+        c.drawRect(0, newImage.getHeight()-newImage.getHeight()/3, newImage.getWidth(),
+                newImage.getHeight(), paint);
+//        c.drawRect(0, newImage.getHeight()-newImage.getHeight()/3, rectRight,
+//                newImage.getHeight(), paint);
         c.drawBitmap(logo, 0, newImage.getHeight()-newImage.getHeight()/3, logoPaint);
-        c.drawText(sharedPreferences.getString("perusahaan", null), logo.getWidth(), newImage.getHeight()-newImage.getHeight()/4, textPaint);
+        c.drawText(Objects.requireNonNull(sharedPreferences.getString("perusahaan", null)),
+                logo.getWidth(), newImage.getHeight()-newImage.getHeight()/4, textPaint);
+//        Log.i("boxWidth", String.valueOf(x));
         for (String line : allCap.split("\n")){
             c.drawText(line, 0, capY, textPaint);
             capY += textPaint.descent() - textPaint.ascent();
         }
         for(String t : timestamp.split("\n")){
-            c.drawText(t, newImage.getWidth()/9+newImage.getWidth()/2, timeY, textPaint);
+//            c.drawText(t, newImage.getWidth()/9+newImage.getWidth()/2, timeY, textPaint);
+            c.drawText(t, newImage.getWidth()-dtLength, timeY, textPaint);
             timeY += textPaint.descent() - textPaint.ascent();
         }
 
         mImageView.setImageBitmap(newImage);
 
-        savePhoto.setOnClickListener(new View.OnClickListener() {
+        buttonSavePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doSavePhoto();
+                savePhoto();
             }
         });
 
@@ -139,7 +168,7 @@ public class PreviewActivity extends AppCompatActivity {
         });
     }
 
-    private void doSavePhoto() {
+    private void savePhoto() {
         // TODO Auto-generated method stub
         final DialogLoading loading = new DialogLoading();
         FragmentManager fm = getSupportFragmentManager();
@@ -150,45 +179,51 @@ public class PreviewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //whatever you want just you have to launch overhere.
-                saveImageToExternalStorage(newImage);
+                createFile();
                 loading.dismiss();
-                Toast.makeText(getApplicationContext(), "Berhasil menyimpan", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Berhasil menyimpan", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         }, 1000);
     }
 
-    public boolean saveImageToExternalStorage(Bitmap image) {
+    public void createFile() {
+        File dir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "Delta Perumnas");
+
+        File file = new File(dir.getPath(), "IMG_"+ date.replace("-", "") +
+                "_" + time.replace(":", "") + ".jpg");
+
+        File delFile = new File(path);
+
         try {
-            File dir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), "Delta Perumnas");
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-
-            OutputStream fOut = null;
-            File file = new File(dir.getPath(), "IMG_"+ date + "_" + time + ".jpg");
-            file.createNewFile();
-            fOut = new FileOutputStream(file);
+            dir.mkdirs();
+            OutputStream fOut = new FileOutputStream(file);
 
 // 100 means no compression, the lower you go, the stronger the compression
-            image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            newImage.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
 
-            File fileToDel = new File(CaptionActivity.file.getPath());
-            if(fileToDel.exists()){
-                fileToDel.delete();
-                path = null;
-                bm.recycle();
-            }
-            return true;
+//            MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+//                    new MediaScannerConnection.OnScanCompletedListener() {
+//                        @Override
+//                        public void onScanCompleted(String s, Uri uri) {
+//                            Log.i("createFile()", "Scanned " + s + ":");
+//                            Log.i("createFile()", "-> uri=" + uri);
+//                        }
+//                    });
+
+            delFile.delete();
+
+            Toast.makeText(this, "Foto berhasil disimpan di: " + file.getAbsolutePath(),
+                    Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
-            Log.e("saveToExternalStorage()", e.getMessage());
-            return false;
+            Log.e("createFile()", e.getMessage());
+//            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -228,5 +263,18 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
         return inSampleSize;
+    }
+
+    private float getLongestSubstringLength(String[] texts, Paint p){
+        float length = p.measureText(texts[0]);
+
+        for(String text : texts){
+            float temp = p.measureText(text);
+            if(temp > length){
+                length = temp;
+            }
+        }
+        Log.i("getLongestSubstring()", String.valueOf(length));
+        return length;
     }
 }
